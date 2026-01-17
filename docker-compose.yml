@@ -11,14 +11,12 @@ services:
     expose:
       - "3333"
 
-    volumes:
-      - ./cert:/app/cert:ro
-
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rifa.rule=Host(`rifa.seudominio.com`)"
+      - "traefik.http.routers.rifa.rule=Host(`rifa.minklab.cloud`)"
       - "traefik.http.routers.rifa.entrypoints=websecure"
       - "traefik.http.routers.rifa.tls.certresolver=le"
+      - "traefik.http.services.rifa.loadbalancer.server.port=3333"
 
     networks:
       - web
