@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id         String   @id @default(uuid())
+  fullName   String
+  cpf        String   @unique
+  phone      String
+  created_at DateTime @default(now())
+
+  rifas        Rifa[]
+  transactions Transaction[]
+
+  @@map("clients")
+}
+
+model Transaction {
+  id              String   @id
+  client_id       String
+  amount          Float
+  status          String   @default("PENDING")
+  txid            String?  @unique
+  pix_copy_paste  String?
+  qr_code_image   String?
+  expires_at      DateTime
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  client Client @relation(fields: [client_id], references: [id])
+  rifas  Rifa[]
+
+  @@map("transactions")
+}
+
+model Rifa {
+  id             String   @id @default(uuid())
+  number         Int      @unique
+  client_id      String?
+  transaction_id String?
+  status         String   @default("AVAILABLE") // AVAILABLE, RESERVED, PAID
+  reserved_at    DateTime?
+  paid_at        DateTime?
+  created_at     DateTime @default(now())
+
+  client      Client?      @relation(fields: [client_id], references: [id])
+  transaction Transaction? @relation(fields: [transaction_id], references: [id])
+
+  @@index([status])
+  @@index([number])
+  @@map("rifas")
+}

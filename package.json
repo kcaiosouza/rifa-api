@@ -1,0 +1,33 @@
+{
+  "name": "rifa-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "typescript-init": "tsc --init",
+    "dev": "tsx watch --env-file .env src/server.ts",
+    "prisma-init": "prisma init --datasource-provider postgresql",
+    "prisma-migrate": "prisma migrate dev",
+    "prisma-seed": "tsx --env-file .env prisma/seed.ts",
+    "prisma-studio": "prisma studio"
+  },
+  "prisma": {
+    "seed": "tsx --env-file .env prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^22.13.10",
+    "prisma": "^6.5.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.0.1",
+    "@prisma/client": "^6.5.0",
+    "axios": "^1.8.4",
+    "bcrypt": "^5.1.1",
+    "date-fns": "^4.1.0",
+    "fastify": "^5.2.1",
+    "uuid": "^11.1.0"
+  }
+}
