@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  rifa-api:
+    build: .
+    container_name: rifa-api
+
+    env_file:
+      - .env
+
+    expose:
+      - "3333"
+
+    volumes:
+      - ./cert:/app/cert:ro
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rifa.rule=Host(`rifa.seudominio.com`)"
+      - "traefik.http.routers.rifa.entrypoints=websecure"
+      - "traefik.http.routers.rifa.tls.certresolver=le"
+
+    networks:
+      - web
+
+    restart: unless-stopped
+
+networks:
+  web:
+    external: true
