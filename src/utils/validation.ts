@@ -24,7 +24,10 @@ export function validateCreatePayment(body: any): CreatePaymentRequest {
     throw new ValidationError('Números da rifa são obrigatórios');
   }
 
-  const numbers = body.numbers.filter((n: any) => Number.isInteger(n) && n > 0);
+  const numbers = body.numbers.filter(
+  (n: unknown): n is number =>
+    typeof n === 'number' && Number.isInteger(n) && n > 0
+  );
   if (numbers.length !== body.numbers.length) {
     throw new ValidationError('Números da rifa devem ser inteiros positivos');
   }
