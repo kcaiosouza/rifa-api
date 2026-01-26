@@ -64,11 +64,14 @@ class RifaService {
   async releaseExpiredReservations(): Promise<void> {
     const expiredTransactions = await prisma.transaction.findMany({
       where: {
-        status: 'PENDING',
+        status: 'ATIVA',
         expires_at: { lt: new Date() },
       },
       select: { id: true },
     });
+
+    console.log(expiredTransactions);
+    console.log(new Date());
 
     if (expiredTransactions.length > 0) {
       await prisma.$transaction([
@@ -132,7 +135,7 @@ class RifaService {
       number: r.number,
       client: {
         name: r.client!.fullName,
-        cpf: r.client!.cpf,
+        cpf: this.maskCpf(r.client!.cpf),
         phone: r.client!.phone,
       },
     }));
@@ -154,6 +157,14 @@ class RifaService {
       numbers: t.rifas.map(r => r.number).sort((a, b) => a - b),
       created_at: t.created_at,
     }));
+  }
+
+  private maskCpf(cpf: string): string {
+    // Remove caracteres não numéricos
+    const cleanCpf = cpf.replace(/\D/g, '');
+    
+    // Formata: 123.***.***-12
+    return `${cleanCpf.substring(0, 3)}.***.***-${cleanCpf.substring(9, 11)}`;
   }
 }
 

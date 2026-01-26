@@ -10,6 +10,12 @@ const app = Fastify({
   logger: config.server.nodeEnv === 'development',
 });
 
+// app.addHook('onRequest', async (request, reply) => {
+//   console.log(`🌐 [REQUEST] ${request.method} ${request.url}`);
+//   console.log(`🌐 [IP] ${request.ip}`);
+//   console.log(`🌐 [Headers]`, JSON.stringify(request.headers, null, 2));
+// });
+
 // CORS
 app.register(cors, {
   origin: '*', // Alterar antes do deploy

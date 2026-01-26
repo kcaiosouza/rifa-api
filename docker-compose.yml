@@ -13,7 +13,7 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rifa.rule=Host(`rifa.minklab.cloud`)"
+      - "traefik.http.routers.rifa.rule=Host(`rifa.minklab.cloud`) || Host(`minklab.cloud`)"
       - "traefik.http.routers.rifa.entrypoints=websecure"
       - "traefik.http.routers.rifa.tls.certresolver=le"
       - "traefik.http.services.rifa.loadbalancer.server.port=3333"
